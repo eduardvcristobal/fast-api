@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -36,19 +38,20 @@ def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.
         models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
     return posts
 
-
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.Post)
-def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
-    # cursor.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """,
-    #                (post.title, post.content, post.published))
-    # new_post = cursor.fetchone()
+@router.post("/", response_model=schemas.Post)
+def create_posts(post: schemas.PostCreate, db: Session = Depends(get_db),
+                 current_user=Depends(oauth2.get_current_user)):
+    new_post_data = post.dict()
+    new_post_data["owner_id"] = int(current_user.id)
+    new_post_data["created_at"] = datetime.utcnow()  # Set the created_at field to the current datetime
 
     # conn.commit()
 
-    new_post = models.Post(owner_id=current_user.id, **post.dict())
-    db.add(new_post)
-    db.commit()
-    db.refresh(new_post)
+    # new_post = models.Post(owner_id=current_user.id, **post.dict())
+    new_post = models.Post(**new_post_data)
+    db.add(new_post)  # Add the new post to the database session
+    db.commit()  # Commit the changes to the database
+    db.refresh(new_post)  # Refresh the post object to get the database-generated values
 
     return new_post
 

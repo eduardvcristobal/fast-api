@@ -1,0 +1,54 @@
+python3 -m venv venv
+pip install fastapi[all]
+pip install --upgrade --force-reinstall fastapi
+
+https://fastapi.tiangolo.com/tutorial/first-steps/
+
+run:
+    uvicorn main2:app --reload
+    uvicorn main_with_postgres:app --reload
+    uvicorn main_with_alchemy:app --reload
+docs:
+    http://127.0.0.1:8000/docs
+    http://127.0.0.1:8000/openapi.json
+    http://127.0.0.1:8000/
+
+sqlalchemy for ORM
+fastapi with sqlalchemy
+    https://fastapi.tiangolo.com/tutorial/sql-databases/
+pip install sqlalchemy
+
+
+uvicorn app.main:app --reload
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+https://github.com/eduardvcristobal/fastapi-course
+
+
+
+
+pip install gunicorn
+pip install uvloop
+pip install httptools
+
+openssl rand -hex 32
+
+
+URL Tutorial : https://www.youtube.com/watch?v=0sOvCWFmrtA&list=PLCV9uHaRCA1StEMlit6SHxEoTislAUhgR&index=1&t=41707s
+11:23 - 12:00 = install git
+1. create a git ignore file .gitignore
+2. pip freeze > create requirements.txt and copy the pip packages
+  - pip install -r requirements.txt
+3. Install git in your machine
+    a. https://git-scm.com/downloads
+    b. default main branch now from master branch
+    c. open the terminal and type git --version
+4. Create a github account
+    a. Create new reposotory
+    b. go to terminal and type git init
+    c. git remote add origin
+    d. git add . or git add --all
+
+
+
+
